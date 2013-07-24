@@ -101,19 +101,30 @@ module Coolex
 
 
     def initialize(cards)
-      @cards = cards
+      if cards.all? { |c| c == 0 }
+        @cards = [0]
+      else
+        @cards = cards
+      end
     end
 
 
     def each
-      mp = CoolexInner.new(@cards)
+      if @cards == [0]
+        yield []
 
-      return to_enum unless block_given?
+        return to_enum unless block_given?
 
-      loop do
-        n = mp.next
-        break if n.nil?
-        yield n
+      else
+        mp = CoolexInner.new(@cards)
+
+        return to_enum unless block_given?
+
+        loop do
+          n = mp.next
+          break if n.nil?
+          yield n
+        end
       end
     end
 
