@@ -101,7 +101,11 @@ module Coolex
 
 
     def initialize(cards)
-      if cards.all? { |c| c == 0 }
+      if cards.any? { |c| c < 0 }
+        raise ArgumentError
+      elsif cards.any? { |c| !(Integer === c) }
+        raise ArgumentError
+      elsif cards.all? { |c| c == 0 }
         @cards = [0]
       else
         @cards = cards
